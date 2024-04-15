@@ -46,10 +46,12 @@ public class Ev_LogApontamento implements EventoProgramavelJava{
 	      String faturar = target.asString("FATURAR");
 	      Utilitario_HTML lp = new Utilitario_HTML();
 	      
+	      //Verifica se na nota que foi lançada já tem o cod prod, se sim soma a qtdneg
 	      boolean somaOuLanca = lp.verificaNota(nunota, codprod, qtdneg, sequencia, apontamento,remessaOrigem,volume);
 	      if (!somaOuLanca) {
 	         BigDecimal nunpedevox= buscarnunpedevox(remessaOrigem,codprod,sequencia);
 	         
+	         //Lança o produto na nota gerada
 	        	 lp.additensLog(nunota, codprod, qtdneg, codvol, vlrunit, vlrtotal, remessaOrigem, sequencia, apontamento,volume, nunpedevox);
 	         
 	         
