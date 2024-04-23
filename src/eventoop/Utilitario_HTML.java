@@ -34,6 +34,7 @@ public class Utilitario_HTML {
 
 
 	//########################   FUNÇÕES DO DASHBOARD
+	//Lança o produto na nota gerada
 	public void additensLog(BigDecimal nunota, BigDecimal codprod, BigDecimal qtdneg, String codvol, BigDecimal vlrunit, BigDecimal vlrtotal, BigDecimal remessaOrigem, BigDecimal sequencia, BigDecimal apontamento, BigDecimal volume,BigDecimal nunpedevox ) throws Exception {
 			
 			
@@ -75,9 +76,10 @@ public class Utilitario_HTML {
 						.set("AD_REMESSAORIGEM", remessaOrigem)
 						.set("AD_CUSTOMIZACAO",  BigDecimal.valueOf(24))//CUSTOMIZAÇÃO RECEBE O CAMPO DA NOTA PARA CASO DELETE RETORNAR PARA O VALOR CERTO
 				        .save();
-				
+				        
+				        //subtrai da nota de origem (24)
 				        subtrairDoApontamento(codprod, sequencia, apontamento, qtdneg,remessaOrigem);
-
+				        	//verifica se o volume é de 20 Litros para lançar bombona
 				          if(volume.intValue() ==6) {
 				        	  adicionaBombona(nunota,qtdneg,remessaOrigem);
 				          }
@@ -107,7 +109,7 @@ public class Utilitario_HTML {
 
 	
 	
-
+	//Verifica se o produto está na nota, se sim retorna true
 	public boolean verificaNota(BigDecimal nunota, BigDecimal codprod, BigDecimal qtdneg, BigDecimal sequencia, BigDecimal apontamento, BigDecimal remessaOrigem, BigDecimal volume) throws MGEModelException {
 	    
 		boolean resultado = false;
@@ -118,6 +120,7 @@ public class Utilitario_HTML {
 	    
 	    System.out.println("função verificaNota");
 
+	    //Pega a quantidade anterior na nota que foi criada
 	    try {
 	       hnd = JapeSession.open();
 	       hnd.setFindersMaxRows(-1);
@@ -133,7 +136,9 @@ public class Utilitario_HTML {
 	          
 	    	   resultado = true;
 	          BigDecimal qtdAnterior = rset.getBigDecimal("QTDNEG");
+	          //função que soma na nota que foi criada
 	          somaProd(nunota, codprod, qtdneg, qtdAnterior,volume,remessaOrigem);
+	          //função que subtrai da nota origem (24)
 	          this.subtrairDoApontamento(codprod, sequencia, apontamento, qtdneg, remessaOrigem);
 	       }
 	    } catch (Exception var17) {
@@ -518,7 +523,7 @@ public boolean verificaNotaEVOX(BigDecimal nunota, BigDecimal codprod, BigDecima
 				    ResultSet rset = null;
 				    
 				    System.out.println("função verificaNota");
-
+				    //Verifica se já aexite BOMBONA  na nota, para poder adicionar
 				    try {
 				       hnd = JapeSession.open();
 				       
@@ -545,11 +550,11 @@ public boolean verificaNotaEVOX(BigDecimal nunota, BigDecimal codprod, BigDecima
 				            
 				            
 				          }
-				       
+				       //se não existir, deve lançar BOMBONA na nota
 				       if(!existeBombona) {
 				    	   lancarBombona(nunota,qtdneg,remessaOrigem);
 				       }
-				       
+				       //sbtrai bombona da nota de origem
 				       subtraiBombonaApontamento(remessaOrigem,qtdneg);
 				       
 				    } catch (Exception var17) {
