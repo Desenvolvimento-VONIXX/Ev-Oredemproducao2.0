@@ -3,6 +3,8 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import br.com.sankhya.jape.EntityFacade;
 import br.com.sankhya.jape.core.JapeSession;
 import br.com.sankhya.jape.core.JapeSession.SessionHandle;
@@ -104,7 +106,7 @@ public class Adicionaitem {
 					DynamicVO pro = iteDAO.create()
 							.set("CODEMP", BigDecimal.valueOf(1))
 							.set("CODPROD", codprod)
-							.set("NUNOTA", BigDecimal.valueOf(1027430))
+							.set("NUNOTA", BigDecimal.valueOf(24))
 							.set("QTDNEG", quantidade)	
 							.set("CODVOL", proDAO.findByPK(codprod).asString("CODVOL"))
 							.set("VLRUNIT", vlr)
@@ -124,7 +126,8 @@ public class Adicionaitem {
 							.set("AD_APONTAMENTO", BigDecimal.valueOf(0.00))
 							.set("PENDENTE",  "S")
 					        .save();
-					
+				BigDecimal vlrtotCab = selecionarItens(BigDecimal.valueOf(24));
+				atualizarValorCAB(vlrtotCab,BigDecimal.valueOf(24));	
 				updatenunota(nunotaorigem);
 				
 				
@@ -156,7 +159,7 @@ public class Adicionaitem {
 				DynamicVO pro = iteDAO.create()
 						.set("CODEMP", BigDecimal.valueOf(1))
 						.set("CODPROD", codprod)
-						.set("NUNOTA", BigDecimal.valueOf(1027430))
+						.set("NUNOTA", BigDecimal.valueOf(24))
 						.set("QTDNEG", quantidade)	
 						.set("CODVOL", proDAO.findByPK(codprod).asString("CODVOL"))
 						.set("VLRUNIT", vlr)
@@ -177,7 +180,8 @@ public class Adicionaitem {
 						.set("AD_NUNPEDEVOX", nunpedevox)
 						.set("PENDENTE",  "S")
 				        .save();
-				
+			BigDecimal vlrtotCab = selecionarItens(BigDecimal.valueOf(24));
+			atualizarValorCAB(vlrtotCab,BigDecimal.valueOf(24));
 			updatenunota(nunotaorigem);
 			
 			
@@ -190,6 +194,73 @@ public class Adicionaitem {
 			} finally {
 				JapeSession.close(hnd);
 			}}
+
+		public void atualizarValorCAB(BigDecimal vlrtotCab, BigDecimal nunota) throws SQLException {
+			
+			
+			  SessionHandle hnd = JapeSession.open();
+		        hnd.setFindersMaxRows(-1);
+		        EntityFacade entity = EntityFacadeFactory.getDWFFacade();
+		        JdbcWrapper jdbc = entity.getJdbcWrapper();
+		        jdbc.openSession();
+		        
+			  try {
+	          NativeSql sql = new NativeSql(jdbc);
+	          sql.appendSql("UPDATE TGFCAB SET VLRNOTA =:VLRNOTA WHERE NUNOTA = :NUNOTA");
+	          sql.setNamedParameter("NUNOTA", nunota);
+	          sql.setNamedParameter("VLRNOTA", vlrtotCab);
+	          sql.executeUpdate();
+	          
+	         
+	          
+	      } catch (Exception e) {
+	          e.printStackTrace();
+	      } finally {
+	          JdbcWrapper.closeSession(jdbc);
+	          JapeSession.close(hnd);
+	      }
+			
+		}
+
+
+
+		public BigDecimal selecionarItens(BigDecimal nunota) throws MGEModelException {
+			JdbcWrapper jdbc = null;
+			EntityFacade entity = EntityFacadeFactory.getDWFFacade();
+			jdbc = entity.getJdbcWrapper();
+			BigDecimal vlrTotalCAB =  BigDecimal.ZERO;
+		    
+			try {
+				
+				jdbc.openSession();
+			    NativeSql query = new NativeSql(jdbc);
+				query.setNamedParameter("NUNOTA", nunota);
+				query.appendSql("SELECT SUM(VLRTOT) AS VLRTOTS FROM TGFITE WHERE NUNOTA=:NUNOTA"); //CODIGO PRODUTO
+				
+				ResultSet rset = query.executeQuery();
+				if (rset.next()) {
+					 
+					vlrTotalCAB=rset.getBigDecimal("VLRTOTS");
+				}
+					
+				
+			}
+
+			catch (Exception e) {
+				e.printStackTrace();
+				MGEModelException.throwMe(e);
+				System.out.println("Erro ao Executar Evento consultaPreco" + e.getCause() + e.getMessage());
+			} finally {
+				JdbcWrapper.closeSession(jdbc);
+			}
+			return vlrTotalCAB;
+		}
+
+
+
+		
+
+
 
 		private void updatenunota(BigDecimal nunotaorigem) throws Exception{
 			
@@ -207,8 +278,8 @@ public class Adicionaitem {
 	          sql.setNamedParameter("LANCADA", "SIM");
 	          sql.executeUpdate();
 	          
-	          imp.calcularTotalItens(BigDecimal.valueOf(1027430), true);
-	          imp.totalizarNota(BigDecimal.valueOf(1027430));
+	          imp.calcularTotalItens(BigDecimal.valueOf(24), true);
+	          imp.totalizarNota(BigDecimal.valueOf(24));
 	          
 	      } catch (Exception e) {
 	          e.printStackTrace();
@@ -217,6 +288,10 @@ public class Adicionaitem {
 	          JapeSession.close(hnd);
 	      }
 		}
+		
+		
+		
+		
 			  
 		
 }

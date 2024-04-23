@@ -46,19 +46,34 @@ public class Ev_LogApontamento implements EventoProgramavelJava{
 	      String faturar = target.asString("FATURAR");
 	      Utilitario_HTML lp = new Utilitario_HTML();
 	      
-	      boolean somaOuLanca = lp.verificaNota(nunota, codprod, qtdneg, sequencia, apontamento,remessaOrigem,volume);
+	      BigDecimal nunpedevox= buscarnunpedevox(remessaOrigem,codprod,sequencia);
+	      if(nunpedevox==null) {
+	    	 boolean somaOuLanca = lp.verificaNota(nunota, codprod, qtdneg, sequencia, apontamento,remessaOrigem,volume);
+	      
+	      
 	      if (!somaOuLanca) {
-	         BigDecimal nunpedevox= buscarnunpedevox(remessaOrigem,codprod,sequencia);
+	         
 	         
 	        	 lp.additensLog(nunota, codprod, qtdneg, codvol, vlrunit, vlrtotal, remessaOrigem, sequencia, apontamento,volume, nunpedevox);
 	         
 	         
 	      }
-	      
+	      }else {
+	    	  boolean somaOuLanca = lp.verificaNotaEVOX(nunota, codprod, qtdneg, sequencia, apontamento,remessaOrigem,volume,nunpedevox);
+	    	  
+	    	  if (!somaOuLanca) {
+	 	         
+	 	         
+		        	 lp.additensLog(nunota, codprod, qtdneg, codvol, vlrunit, vlrtotal, remessaOrigem, sequencia, apontamento,volume, nunpedevox);
+		         
+		         
+		      }
+	      }
 		    //verifica se tem que lançar BOMBONA
           if(volume.intValue() ==6) {
         	  //lp.adicionaBombona(nunota,qtdneg,remessaOrigem);
           }
+          
 
 //	      if ("S".equals(faturar)) {
 //	         Utilitarios ut = new Utilitarios();
@@ -119,7 +134,8 @@ public class Ev_LogApontamento implements EventoProgramavelJava{
 		BigDecimal vlrtotal = target.asBigDecimal("VLRTOT");
 		BigDecimal volume = target.asBigDecimal("VOLUME");
 		
-		if(nunotaOrigem.intValue() == 1027430) {
+		
+		if(nunotaOrigem.intValue() == 24) {
 			//verificar se foi lançado na nota de origem
 			boolean retornou = false;
 			
@@ -137,16 +153,24 @@ public class Ev_LogApontamento implements EventoProgramavelJava{
 				
 				query.setNamedParameter("SEQUENCIA", sequencia);
 				query.setNamedParameter("NUNOTA", nunotaOrigem);
-				query.appendSql("SELECT QTDNEG FROM TGFITE WHERE NUNOTA = :NUNOTA AND SEQUENCIA = :SEQUENCIA");
+				query.appendSql("SELECT QTDNEG,AD_NUNPEDEVOX FROM TGFITE WHERE NUNOTA = :NUNOTA AND SEQUENCIA = :SEQUENCIA");
 				rset = query.executeQuery();
 				
 				if (rset.next()) {
-					
+					BigDecimal nunpedevox= rset.getBigDecimal("AD_NUNPEDEVOX");
 					BigDecimal qtdAnterior = rset.getBigDecimal("QTDNEG");
 					
-					lp.atualizaNotaOrigem(nunotaOrigem,qtdneg,qtdAnterior,sequencia,codprod,vlrunit);
+					if(nunpedevox==null) {
+						lp.atualizaNotaOrigem(nunotaOrigem,qtdneg,qtdAnterior,sequencia,codprod,vlrunit);
+					}else {
+						lp.atualizaNotaOrigemEVOX(nunotaOrigem,qtdneg,qtdAnterior,sequencia,codprod,vlrunit,nunpedevox);
+					}
+					
+					Adicionaitem add = new Adicionaitem();
+					BigDecimal vlrtotCab=add.selecionarItens(BigDecimal.valueOf(24));
+					add.atualizarValorCAB(vlrtotCab, BigDecimal.valueOf(24));
 					//util.somaProd(nunot,codprod,qtdneg,qtdAnterior);
-					System.out.println(" ###################achou qtdneg da nota origem = "+qtdAnterior);
+					System.out.println(" ###################achou qtdneg da nota origem TESTE = "+qtdAnterior);
 					
 				}
 

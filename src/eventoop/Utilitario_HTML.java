@@ -85,7 +85,9 @@ public class Utilitario_HTML {
 				imp.calcularImpostos(nunota);
 			    imp.setForcarRecalculo(true);
 			    imp.totalizarNota(nunota);
-				
+			    Adicionaitem add = new Adicionaitem();
+				BigDecimal vlrtotCab=add.selecionarItens(BigDecimal.valueOf(24));
+				add.atualizarValorCAB(vlrtotCab, BigDecimal.valueOf(24));
 
 			}
 			
@@ -145,6 +147,51 @@ public class Utilitario_HTML {
 
 	    return resultado;
 	 }
+	
+public boolean verificaNotaEVOX(BigDecimal nunota, BigDecimal codprod, BigDecimal qtdneg, BigDecimal sequencia, BigDecimal apontamento, BigDecimal remessaOrigem, BigDecimal volume, BigDecimal nunpedevox) throws MGEModelException {
+	    
+		boolean resultado = false;
+	    SessionHandle hnd = null;
+	    JdbcWrapper jdbc = null;
+	    NativeSql query = null;
+	    ResultSet rset = null;
+	    
+	    System.out.println("função verificaNota");
+
+	    try {
+	       hnd = JapeSession.open();
+	       hnd.setFindersMaxRows(-1);
+	       EntityFacade entity = EntityFacadeFactory.getDWFFacade();
+	       jdbc = entity.getJdbcWrapper();
+	       jdbc.openSession();
+	       query = new NativeSql(jdbc);
+	       query.setNamedParameter("CODPROD", codprod);
+	       query.setNamedParameter("NUNOTA", nunota);
+	       query.setNamedParameter("AD_NUNPEDEVOX", nunpedevox);
+	       query.appendSql("SELECT QTDNEG FROM SANKHYA.TGFITE WHERE NUNOTA = :NUNOTA AND CODPROD = :CODPROD AND AD_NUNPEDEVOX=:AD_NUNPEDEVOX");
+	       rset = query.executeQuery();
+	       if (rset.next()) {
+	          
+	    	  resultado = true;
+	          BigDecimal qtdAnterior = rset.getBigDecimal("QTDNEG");
+	          somaProdEVOX(nunota, codprod, qtdneg, qtdAnterior,volume,remessaOrigem,nunpedevox);
+	          this.subtrairDoApontamento(codprod, sequencia, apontamento, qtdneg, remessaOrigem);
+	       }
+	    } catch (Exception var17) {
+	       var17.printStackTrace();
+	       MGEModelException.throwMe(var17);
+	       System.out.println("Erro ao Executar consultaPreco" + var17.getCause() + var17.getMessage());
+	    } finally {
+	       JdbcWrapper.closeSession(jdbc);
+	       JapeSession.close(hnd);
+	    }
+
+	    return resultado;
+	 }
+	
+	
+	
+	
 
 	 public void subtrairDoApontamento(BigDecimal codprod, BigDecimal sequencia, BigDecimal apontamento, BigDecimal qtdneg, BigDecimal remessaOrigem) throws MGEModelException {
 	    SessionHandle hnd = null;
@@ -170,7 +217,9 @@ public class Utilitario_HTML {
 	          BigDecimal qtdAnterior = rset.getBigDecimal("QTDNEG");
 	          BigDecimal nunota = rset.getBigDecimal("NUNOTA");
 	          subtraiProd(nunota, codprod, qtdneg, qtdAnterior, sequencia,remessaOrigem);
-	          
+	          Adicionaitem add = new Adicionaitem();
+			  BigDecimal vlrtotCab=add.selecionarItens(BigDecimal.valueOf(24));
+			  add.atualizarValorCAB(vlrtotCab, BigDecimal.valueOf(24));
 	       }
 	    } catch (Exception var16) {
 	       var16.printStackTrace();
@@ -229,6 +278,51 @@ public class Utilitario_HTML {
 		      }
 
 		   }
+		 
+		 public void somaProdEVOX(BigDecimal nunota, BigDecimal codprod, BigDecimal qtdneg, BigDecimal qtdAnterior, BigDecimal volume, BigDecimal remessaOrigem, BigDecimal nunpedevox) throws Exception {
+		      BigDecimal novavariavel = qtdneg.add(qtdAnterior);
+		      ImpostosHelpper imp = new ImpostosHelpper();
+		      
+		      EntityFacade entity = EntityFacadeFactory.getDWFFacade();
+		      JdbcWrapper jdbc = entity.getJdbcWrapper();
+		      jdbc.openSession();
+		      NativeSql query = new NativeSql(jdbc);
+		      query.setNamedParameter("NUNOTA", nunota);
+		      query.setNamedParameter("CODPROD", codprod);
+		      query.setNamedParameter("AD_NUNPEDEVOX", nunpedevox);
+		      query.appendSql("SELECT VLRUNIT FROM TGFITE WHERE NUNOTA = :NUNOTA AND CODPROD = :CODPROD AND AD_NUNPEDEVOX=:AD_NUNPEDEVOX");
+		      ResultSet rset = query.executeQuery();
+		      if (rset.next()) {
+		         BigDecimal vlrunitario = rset.getBigDecimal("VLRUNIT");
+
+		         try {
+		            NativeSql sql = new NativeSql(jdbc);
+		            sql.appendSql("UPDATE TGFITE SET QTDNEG = :QUANTIDADE, VLRTOT = :VLRTOT WHERE NUNOTA = :NUNOTA AND CODPROD = :CODPROD AND AD_NUNPEDEVOX=:AD_NUNPEDEVOX");
+		            sql.setNamedParameter("NUNOTA", nunota);
+		            sql.setNamedParameter("VLRTOT", vlrunitario.multiply(novavariavel));
+		            sql.setNamedParameter("QUANTIDADE", novavariavel);
+		            sql.setNamedParameter("CODPROD", codprod);
+		            sql.setNamedParameter("AD_NUNPEDEVOX", nunpedevox);
+		            sql.executeUpdate();
+		            
+		            
+		            if(volume.intValue() ==6) {
+		          	  adicionaBombona(nunota,qtdneg,remessaOrigem);
+		            }
+		            imp.calcularImpostos(nunota);
+		            imp.setForcarRecalculo(true);
+		            imp.totalizarNota(nunota);
+		            
+		         } catch (Exception var17) {
+		            var17.printStackTrace();
+		         } finally {
+		            JdbcWrapper.closeSession(jdbc);
+		          
+		         }
+		      }
+
+		   }
+		 
 
 
 
@@ -299,6 +393,31 @@ public class Utilitario_HTML {
 		      }
 
 		   }
+		   
+		   public void atualizaNotaOrigemEVOX(BigDecimal nunotaOrigem, BigDecimal qtdneg, BigDecimal qtdAnterior, BigDecimal sequencia, BigDecimal codprod, BigDecimal vlrunitario, BigDecimal nunpedevox) throws Exception {
+			      BigDecimal novoQTD = qtdneg.add(qtdAnterior);
+			      EntityFacade entity = EntityFacadeFactory.getDWFFacade();
+			      JdbcWrapper jdbc = entity.getJdbcWrapper();
+			      jdbc.openSession();
+
+			      try {
+			         NativeSql sql = new NativeSql(jdbc);
+			         sql.appendSql("UPDATE TGFITE SET QTDNEG = :QUANTIDADE, VLRTOT = :VLRTOT WHERE NUNOTA = :NUNOTA  AND SEQUENCIA = :SEQUENCIA AND AD_NUNPEDEVOX=:AD_NUNPEDEVOX");
+			         sql.setNamedParameter("AD_NUNPEDEVOX", nunpedevox);
+			         sql.setNamedParameter("SEQUENCIA", sequencia);
+			         sql.setNamedParameter("VLRTOT", vlrunitario.multiply(novoQTD));
+			         sql.setNamedParameter("QUANTIDADE", novoQTD);
+			         sql.setNamedParameter("CODPROD", codprod);
+			         sql.setNamedParameter("NUNOTA", nunotaOrigem);
+			         sql.executeUpdate();
+			      } catch (Exception var14) {
+			         var14.printStackTrace();
+			      } finally {
+			         JdbcWrapper.closeSession(jdbc);
+			      }
+
+			   }
+
 
 		   public void confirmaPedidoSnk(BigDecimal nuNota) throws MGEModelException {
 			   JapeSession.SessionHandle hnd = null;
@@ -477,7 +596,7 @@ public class Utilitario_HTML {
 				            sql.executeUpdate();
 				            
 				            
-				          }
+				        }
 				       
 				       
 				      

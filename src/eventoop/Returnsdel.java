@@ -2,6 +2,7 @@ package eventoop;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 
 import com.sankhya.util.TimeUtils;
 
@@ -77,7 +78,7 @@ public class Returnsdel implements EventoProgramavelJava{
 		
 		try {
 
-			String sql1 = "SELECT IDAPONTAMENTO FROM AD_LOGAPONTAMENTO WHERE NUNOTA = :NUNOTA AND CODPROD =:CODPROD";
+			String sql1 = "SELECT IDAPONTAMENTO,DTCANCELAMENTO FROM AD_LOGAPONTAMENTO WHERE NUNOTA = :NUNOTA AND CODPROD =:CODPROD";
 			NativeSql query1 = new NativeSql(jdbc);
 			query1.setNamedParameter("CODPROD", codprod);
 			query1.setNamedParameter("NUNOTA", nunota);
@@ -85,8 +86,11 @@ public class Returnsdel implements EventoProgramavelJava{
 			ResultSet rset1 = query1.executeQuery();
 			
 		    while (rset1.next()) {
-		    	 idLog = rset1.getBigDecimal("IDAPONTAMENTO"); 	
-		    	 atualizaLogCancelamento(nunota,nunotaOrigem,codprod,idLog);
+		    	 idLog = rset1.getBigDecimal("IDAPONTAMENTO");
+		    	 Timestamp dtcancel = rset1.getTimestamp("DTCANCELAMENTO"); 
+		    	 if(dtcancel==null) {
+		    		 atualizaLogCancelamento(nunota,nunotaOrigem,codprod,idLog);
+		    	 }
 		    	 
 	        }
 

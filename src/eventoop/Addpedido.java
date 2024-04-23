@@ -56,7 +56,7 @@ public class Addpedido implements EventoProgramavelJava{
 			  try {
 	        BigDecimal nunotaorigem = cab.asBigDecimal("NUNOTA");
 			NativeSql query = new NativeSql(jdbc);
-			query.setNamedParameter("NUNOTA", BigDecimal.valueOf(1027430));
+			query.setNamedParameter("NUNOTA", BigDecimal.valueOf(24));
 			query.appendSql("SELECT STATUSNOTA FROM TGFCAB WHERE NUNOTA = :NUNOTA");
 			ResultSet rset = query.executeQuery();
 
@@ -65,7 +65,7 @@ public class Addpedido implements EventoProgramavelJava{
 
 				if ("A".equals(status)) {
 					BigDecimal nunpedevox=consultaNunpedevox(idiproc);
-					consultapedido(nunotaorigem, BigDecimal.valueOf(1027430),nunpedevox);
+					consultapedido(nunotaorigem, BigDecimal.valueOf(24),nunpedevox);
 				}
 			}
 
@@ -192,9 +192,12 @@ public class Addpedido implements EventoProgramavelJava{
          if (rset1.next()) {
              BigDecimal codprod = rset1.getBigDecimal("CODPROD");
              BigDecimal quantidade = rset1.getBigDecimal("QTDNEG");
+             BigDecimal bombona = rset1.getBigDecimal("AD_CLASSE_PROD");
              
              add.consultaPreco(nunota, codprod, quantidade, nunotaorigem,nunpedevox);
-    
+             if(bombona.compareTo(BigDecimal.valueOf(6))==0) {
+            	 add.consultaPreco(nunota, BigDecimal.valueOf(4008001), quantidade, nunotaorigem,nunpedevox);
+             }
          }
 	       
 
@@ -221,7 +224,7 @@ public class Addpedido implements EventoProgramavelJava{
 //		try {
 //		String sql = "SELECT CODPROD, QTDNEG FROM TGFITE WHERE NUNOTA = :NUNOTA";
 //        NativeSql query = new NativeSql(jdbc);
-//        query.setNamedParameter("NUNOTA", BigDecimal.valueOf(1027430));
+//        query.setNamedParameter("NUNOTA", BigDecimal.valueOf(24));
 //        query.appendSql(sql);
 //        ResultSet rset = query.executeQuery();
 //        
