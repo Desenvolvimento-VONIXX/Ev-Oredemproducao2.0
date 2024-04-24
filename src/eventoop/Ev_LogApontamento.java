@@ -46,20 +46,14 @@ public class Ev_LogApontamento implements EventoProgramavelJava{
 	      String faturar = target.asString("FATURAR");
 	      Utilitario_HTML lp = new Utilitario_HTML();
 	      
-<<<<<<< HEAD
 	      BigDecimal nunpedevox= buscarnunpedevox(remessaOrigem,codprod,sequencia);
 	      if(nunpedevox==null) {
 	    	 boolean somaOuLanca = lp.verificaNota(nunota, codprod, qtdneg, sequencia, apontamento,remessaOrigem,volume);
 	      
 	      
-=======
-	      //Verifica se na nota que foi lançada já tem o cod prod, se sim soma a qtdneg
-	      boolean somaOuLanca = lp.verificaNota(nunota, codprod, qtdneg, sequencia, apontamento,remessaOrigem,volume);
->>>>>>> bff807742d4941d436407bdb1f62db3b605f36d7
 	      if (!somaOuLanca) {
 	         
 	         
-	         //Lança o produto na nota gerada
 	        	 lp.additensLog(nunota, codprod, qtdneg, codvol, vlrunit, vlrtotal, remessaOrigem, sequencia, apontamento,volume, nunpedevox);
 	         
 	         
@@ -171,7 +165,6 @@ public class Ev_LogApontamento implements EventoProgramavelJava{
 					}else {
 						lp.atualizaNotaOrigemEVOX(nunotaOrigem,qtdneg,qtdAnterior,sequencia,codprod,vlrunit,nunpedevox);
 					}
-					
 					Adicionaitem add = new Adicionaitem();
 					BigDecimal vlrtotCab=add.selecionarItens(BigDecimal.valueOf(24));
 					add.atualizarValorCAB(vlrtotCab, BigDecimal.valueOf(24));

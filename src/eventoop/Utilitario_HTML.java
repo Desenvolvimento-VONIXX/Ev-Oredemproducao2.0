@@ -584,18 +584,21 @@ public boolean verificaNotaEVOX(BigDecimal nunota, BigDecimal codprod, BigDecima
 				       jdbc = entity.getJdbcWrapper();
 				       jdbc.openSession();
 				       query = new NativeSql(jdbc); 
+				       query.setNamedParameter("QTDNEG", qtdneg);
 				       query.setNamedParameter("NUNOTA", remessaOrigem);
-				       query.appendSql("SELECT QTDNEG,VLRUNIT FROM SANKHYA.TGFITE WHERE NUNOTA = :NUNOTA AND CODPROD = 4008001");
+				       query.appendSql("SELECT TOP 1 QTDNEG,VLRUNIT,SEQUENCIA FROM SANKHYA.TGFITE WHERE NUNOTA = :NUNOTA AND CODPROD = 4008001 AND QTDNEG=:QTDNEG");
 				       rset = query.executeQuery();
 				       if (rset.next()) {
 
 				    	   
 				    	   BigDecimal qtdnegAnterior = rset.getBigDecimal("QTDNEG");
+				    	   BigDecimal sequencia = rset.getBigDecimal("SEQUENCIA");
 				    	   BigDecimal novavariavel = qtdnegAnterior.subtract(qtdneg);
 				    	   BigDecimal vlrunitario = rset.getBigDecimal("VLRUNIT");
 				            NativeSql sql = new NativeSql(jdbc);
-				            sql.appendSql("UPDATE TGFITE SET QTDNEG = :QUANTIDADE, VLRTOT = :VLRTOT  WHERE NUNOTA = :NUNOTA AND CODPROD = 4008001");
+				            sql.appendSql("UPDATE TGFITE SET QTDNEG = :QUANTIDADE, VLRTOT = :VLRTOT  WHERE NUNOTA = :NUNOTA AND CODPROD = 4008001 AND SEQUENCIA=:SEQUENCIA");
 				            sql.setNamedParameter("NUNOTA", remessaOrigem);
+				            sql.setNamedParameter("SEQUENCIA", sequencia);
 				            sql.setNamedParameter("VLRTOT", vlrunitario.multiply(novavariavel));
 				            sql.setNamedParameter("QUANTIDADE", novavariavel);
 				            sql.executeUpdate();

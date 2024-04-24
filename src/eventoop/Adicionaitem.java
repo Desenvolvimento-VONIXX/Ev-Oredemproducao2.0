@@ -73,7 +73,7 @@ public class Adicionaitem {
 //		  try {
 //              NativeSql sql = new NativeSql(jdbc);
 //              sql.appendSql("UPDATE TGFITE SET QTDNEG = :QUANTIDADE WHERE NUNOTA = :NUNOTA AND CODPROD = :CODPROD");
-//              sql.setNamedParameter("NUNOTA", BigDecimal.valueOf(1027430));
+//              sql.setNamedParameter("NUNOTA", BigDecimal.valueOf(24));
 //              sql.setNamedParameter("QUANTIDADE", novaquantidade);
 //              sql.setNamedParameter("CODPROD", codprodorigem);
 //              sql.executeUpdate();
@@ -287,6 +287,40 @@ public class Adicionaitem {
 	          JdbcWrapper.closeSession(jdbc);
 	          JapeSession.close(hnd);
 	      }
+		}
+
+
+
+		
+
+
+
+		public void updateintens(BigDecimal codprodorigem, BigDecimal quantidadeorigem, BigDecimal quantidade,
+				BigDecimal nunota) throws SQLException {
+			
+			  SessionHandle hnd = JapeSession.open();
+		        hnd.setFindersMaxRows(-1);
+		        EntityFacade entity = EntityFacadeFactory.getDWFFacade();
+		        JdbcWrapper jdbc = entity.getJdbcWrapper();
+		        jdbc.openSession();
+		        BigDecimal total=quantidadeorigem.add(quantidade); 
+		        
+			  try {
+	          NativeSql sql = new NativeSql(jdbc);
+	          sql.appendSql("UPDATE TGFITE SET QTDNEG = :QTDNEG WHERE NUNOTA = :NUNOTA AND CODPROD=:CODPROD" );
+	          sql.setNamedParameter("NUNOTA", nunota);
+	          sql.setNamedParameter("QTDNEG", total);
+	          sql.setNamedParameter("CODPROD", codprodorigem);
+	          sql.executeUpdate();
+	         
+	          
+	      } catch (Exception e) {
+	          e.printStackTrace();
+	      } finally {
+	          JdbcWrapper.closeSession(jdbc);
+	          JapeSession.close(hnd);
+	      }
+			
 		}
 		
 		

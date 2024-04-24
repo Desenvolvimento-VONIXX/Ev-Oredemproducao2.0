@@ -197,6 +197,7 @@ public class Addpedido implements EventoProgramavelJava{
              add.consultaPreco(nunota, codprod, quantidade, nunotaorigem,nunpedevox);
              if(bombona.compareTo(BigDecimal.valueOf(6))==0) {
             	 add.consultaPreco(nunota, BigDecimal.valueOf(4008001), quantidade, nunotaorigem,nunpedevox);
+            	 //consultaproduto(BigDecimal.valueOf(24),BigDecimal.valueOf(4008001),quantidade,nunotaorigem);
              }
          }
 	       
@@ -214,43 +215,43 @@ public class Addpedido implements EventoProgramavelJava{
 	    
 	  
 	    
-//	private void consultaproduto(BigDecimal nunota,BigDecimal codprod, BigDecimal quantidade, BigDecimal nunotaorigem) throws Exception {
-//		
-//		Adicionaitem add = new Adicionaitem();
-//		
-//	    EntityFacade entity = EntityFacadeFactory.getDWFFacade();
-//		JdbcWrapper jdbc = entity.getJdbcWrapper();
-//		
-//		try {
-//		String sql = "SELECT CODPROD, QTDNEG FROM TGFITE WHERE NUNOTA = :NUNOTA";
-//        NativeSql query = new NativeSql(jdbc);
-//        query.setNamedParameter("NUNOTA", BigDecimal.valueOf(24));
-//        query.appendSql(sql);
-//        ResultSet rset = query.executeQuery();
-//        
-//        boolean encontrouLinhaValida = false;
-//		
-//        while (rset.next()) {
-//        	BigDecimal codprodorigem = rset.getBigDecimal("CODPROD");
-//        	BigDecimal quantidadeorigem = rset.getBigDecimal("QTDNEG");
-//        	 if (codprodorigem.equals(codprod)) {
-//                 encontrouLinhaValida = true;
-//                 add.updateintens(codprodorigem, quantidadeorigem, quantidade, nunotaorigem);   
-//                 break;
-//             }
-//         }
-//
-//         if (!encontrouLinhaValida) {
-//             add.consultaPreco(nunota, codprod, quantidade, nunotaorigem);
-//         }
-//
-//     } catch (Exception e) {
-//         MGEModelException.throwMe(e);}
-//
-//		finally {
-//			JdbcWrapper.closeSession(jdbc);
-//		}
-//	}
+	private void consultaproduto(BigDecimal nunota,BigDecimal codprod, BigDecimal quantidade, BigDecimal nunotaorigem) throws Exception {
+		
+		Adicionaitem add = new Adicionaitem();
+		
+	    EntityFacade entity = EntityFacadeFactory.getDWFFacade();
+		JdbcWrapper jdbc = entity.getJdbcWrapper();
+		
+		try {
+		String sql = "SELECT CODPROD, QTDNEG FROM TGFITE WHERE NUNOTA = :NUNOTA";
+        NativeSql query = new NativeSql(jdbc);
+        query.setNamedParameter("NUNOTA", BigDecimal.valueOf(24));
+        query.appendSql(sql);
+        ResultSet rset = query.executeQuery();
+        
+        boolean encontrouLinhaValida = false;
+		
+        while (rset.next()) {
+        	BigDecimal codprodorigem = rset.getBigDecimal("CODPROD");
+        	BigDecimal quantidadeorigem = rset.getBigDecimal("QTDNEG");
+        	 if (codprodorigem.equals(codprod)) {
+                 encontrouLinhaValida = true;
+                 add.updateintens(codprodorigem, quantidadeorigem, quantidade, nunota);   
+                 break;
+             }
+         }
+
+         if (!encontrouLinhaValida) {
+             add.consultaPreco(nunota, BigDecimal.valueOf(4008001), quantidade, nunotaorigem,null);
+         }
+
+     } catch (Exception e) {
+         MGEModelException.throwMe(e);}
+
+		finally {
+			JdbcWrapper.closeSession(jdbc);
+		}
+	}
 
 	
 	  
