@@ -56,7 +56,7 @@ public class Addpedido implements EventoProgramavelJava{
 			  try {
 	        BigDecimal nunotaorigem = cab.asBigDecimal("NUNOTA");
 			NativeSql query = new NativeSql(jdbc);
-			query.setNamedParameter("NUNOTA", BigDecimal.valueOf(24));
+			query.setNamedParameter("NUNOTA", BigDecimal.valueOf(1027430));
 			query.appendSql("SELECT STATUSNOTA FROM TGFCAB WHERE NUNOTA = :NUNOTA");
 			ResultSet rset = query.executeQuery();
 
@@ -65,7 +65,7 @@ public class Addpedido implements EventoProgramavelJava{
 
 				if ("A".equals(status)) {
 					BigDecimal nunpedevox=consultaNunpedevox(idiproc);
-					consultapedido(nunotaorigem, BigDecimal.valueOf(24),nunpedevox);
+					consultapedido(nunotaorigem, BigDecimal.valueOf(1027430),nunpedevox);
 				}
 			}
 
@@ -138,10 +138,10 @@ public class Addpedido implements EventoProgramavelJava{
 		 		+ "		 	AND PRO.CODPROD <> 2050050\r\n"
 		 		+ "		 	AND PRO.CODPROD <> 2030009\r\n"
 		 		+ "		 	AND PRO.CODPROD <> 2030003\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2050024\r\n"
+		 		+ "		 	AND PRO.CODPROD <> 205001027430\r\n"
 		 		+ "		 	AND PRO.CODPROD <> 2050025\r\n"
 		 		+ "		 	AND PRO.CODPROD <> 2050123\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2050124\r\n"
+		 		+ "		 	AND PRO.CODPROD <> 205011027430\r\n"
 		 		+ "		 	AND PRO.CODPROD <> 2050120\r\n"
 		 		+ "		 	AND PRO.CODPROD <> 2050125\r\n"
 		 		+ "		 	AND PRO.CODPROD <> 2050162\r\n"
@@ -197,7 +197,7 @@ public class Addpedido implements EventoProgramavelJava{
              add.consultaPreco(nunota, codprod, quantidade, nunotaorigem,nunpedevox);
              if(bombona.compareTo(BigDecimal.valueOf(6))==0) {
             	 add.consultaPreco(nunota, BigDecimal.valueOf(4008001), quantidade, nunotaorigem,nunpedevox);
-            	 //consultaproduto(BigDecimal.valueOf(24),BigDecimal.valueOf(4008001),quantidade,nunotaorigem);
+            	 //consultaproduto(BigDecimal.valueOf(1027430),BigDecimal.valueOf(4008001),quantidade,nunotaorigem);
              }
          }
 	       
@@ -225,7 +225,7 @@ public class Addpedido implements EventoProgramavelJava{
 		try {
 		String sql = "SELECT CODPROD, QTDNEG FROM TGFITE WHERE NUNOTA = :NUNOTA";
         NativeSql query = new NativeSql(jdbc);
-        query.setNamedParameter("NUNOTA", BigDecimal.valueOf(24));
+        query.setNamedParameter("NUNOTA", BigDecimal.valueOf(1027430));
         query.appendSql(sql);
         ResultSet rset = query.executeQuery();
         

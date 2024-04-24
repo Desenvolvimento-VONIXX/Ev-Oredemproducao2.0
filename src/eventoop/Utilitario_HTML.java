@@ -74,10 +74,10 @@ public class Utilitario_HTML {
 						.set("PENDENTE",  "S")
 						.set("AD_NUNPEDEVOX", nunpedevox)
 						.set("AD_REMESSAORIGEM", remessaOrigem)
-						.set("AD_CUSTOMIZACAO",  BigDecimal.valueOf(24))//CUSTOMIZAÇÃO RECEBE O CAMPO DA NOTA PARA CASO DELETE RETORNAR PARA O VALOR CERTO
+						.set("AD_CUSTOMIZACAO",  BigDecimal.valueOf(1027430))//CUSTOMIZAÇÃO RECEBE O CAMPO DA NOTA PARA CASO DELETE RETORNAR PARA O VALOR CERTO
 				        .save();
 				        
-				        //subtrai da nota de origem (24)
+				        //subtrai da nota de origem (1027430)
 				        subtrairDoApontamento(codprod, sequencia, apontamento, qtdneg,remessaOrigem);
 				        	//verifica se o volume é de 20 Litros para lançar bombona
 				          if(volume.intValue() ==6) {
@@ -88,8 +88,8 @@ public class Utilitario_HTML {
 			    imp.setForcarRecalculo(true);
 			    imp.totalizarNota(nunota);
 			    Adicionaitem add = new Adicionaitem();
-				BigDecimal vlrtotCab=add.selecionarItens(BigDecimal.valueOf(24));
-				add.atualizarValorCAB(vlrtotCab, BigDecimal.valueOf(24));
+				BigDecimal vlrtotCab=add.selecionarItens(BigDecimal.valueOf(1027430));
+				add.atualizarValorCAB(vlrtotCab, BigDecimal.valueOf(1027430));
 
 			}
 			
@@ -138,7 +138,7 @@ public class Utilitario_HTML {
 	          BigDecimal qtdAnterior = rset.getBigDecimal("QTDNEG");
 	          //função que soma na nota que foi criada
 	          somaProd(nunota, codprod, qtdneg, qtdAnterior,volume,remessaOrigem);
-	          //função que subtrai da nota origem (24)
+	          //função que subtrai da nota origem (1027430)
 	          this.subtrairDoApontamento(codprod, sequencia, apontamento, qtdneg, remessaOrigem);
 	       }
 	    } catch (Exception var17) {
@@ -223,8 +223,8 @@ public boolean verificaNotaEVOX(BigDecimal nunota, BigDecimal codprod, BigDecima
 	          BigDecimal nunota = rset.getBigDecimal("NUNOTA");
 	          subtraiProd(nunota, codprod, qtdneg, qtdAnterior, sequencia,remessaOrigem);
 	          Adicionaitem add = new Adicionaitem();
-			  BigDecimal vlrtotCab=add.selecionarItens(BigDecimal.valueOf(24));
-			  add.atualizarValorCAB(vlrtotCab, BigDecimal.valueOf(24));
+			  BigDecimal vlrtotCab=add.selecionarItens(BigDecimal.valueOf(1027430));
+			  add.atualizarValorCAB(vlrtotCab, BigDecimal.valueOf(1027430));
 	       }
 	    } catch (Exception var16) {
 	       var16.printStackTrace();
@@ -660,7 +660,7 @@ public boolean verificaNotaEVOX(BigDecimal nunota, BigDecimal codprod, BigDecima
 							.set("ATUALESTTERC", "P")
 							.set("TERCEIROS", "S")
 							.set("PENDENTE",  "S")
-							.set("AD_CUSTOMIZACAO",  BigDecimal.valueOf(24))//CUSTOMIZAÇÃO RECEBE O CAMPO DA NOTA PARA CASO DELETE RETORNAR PARA O VALOR CERTO
+							.set("AD_CUSTOMIZACAO",  BigDecimal.valueOf(1027430))//CUSTOMIZAÇÃO RECEBE O CAMPO DA NOTA PARA CASO DELETE RETORNAR PARA O VALOR CERTO
 							.set("AD_REMESSAORIGEM", remessaOrigem)
 					        .save();
 					

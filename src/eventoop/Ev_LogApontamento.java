@@ -135,7 +135,7 @@ public class Ev_LogApontamento implements EventoProgramavelJava{
 		BigDecimal volume = target.asBigDecimal("VOLUME");
 		
 		
-		if(nunotaOrigem.intValue() == 24) {
+		if(nunotaOrigem.intValue() == 1027430) {
 			//verificar se foi lançado na nota de origem
 			boolean retornou = false;
 			
@@ -166,8 +166,8 @@ public class Ev_LogApontamento implements EventoProgramavelJava{
 						lp.atualizaNotaOrigemEVOX(nunotaOrigem,qtdneg,qtdAnterior,sequencia,codprod,vlrunit,nunpedevox);
 					}
 					Adicionaitem add = new Adicionaitem();
-					BigDecimal vlrtotCab=add.selecionarItens(BigDecimal.valueOf(24));
-					add.atualizarValorCAB(vlrtotCab, BigDecimal.valueOf(24));
+					BigDecimal vlrtotCab=add.selecionarItens(BigDecimal.valueOf(1027430));
+					add.atualizarValorCAB(vlrtotCab, BigDecimal.valueOf(1027430));
 					//util.somaProd(nunot,codprod,qtdneg,qtdAnterior);
 					System.out.println(" ###################achou qtdneg da nota origem TESTE = "+qtdAnterior);
 					
