@@ -74,22 +74,22 @@ public class Utilitario_HTML {
 						.set("PENDENTE",  "S")
 						.set("AD_NUNPEDEVOX", nunpedevox)
 						.set("AD_REMESSAORIGEM", remessaOrigem)
-						.set("AD_CUSTOMIZACAO",  BigDecimal.valueOf(1027430))//CUSTOMIZAÇÃO RECEBE O CAMPO DA NOTA PARA CASO DELETE RETORNAR PARA O VALOR CERTO
+						.set("AD_CUSTOMIZACAO",  BigDecimal.valueOf(24))//CUSTOMIZAÇÃO RECEBE O CAMPO DA NOTA PARA CASO DELETE RETORNAR PARA O VALOR CERTO
 				        .save();
 				        
-				        //subtrai da nota de origem (1027430)
+				        //subtrai da nota de origem (24)
 				        subtrairDoApontamento(codprod, sequencia, apontamento, qtdneg,remessaOrigem);
 				        	//verifica se o volume é de 20 Litros para lançar bombona
-				          if(volume.intValue() ==6) {
-				        	  adicionaBombona(nunota,qtdneg,remessaOrigem);
-				          }
+//				          if(volume.intValue() ==6) {
+//				        	  adicionaBombona(nunota,qtdneg,remessaOrigem);
+//				          }
 		        	
 				imp.calcularImpostos(nunota);
 			    imp.setForcarRecalculo(true);
 			    imp.totalizarNota(nunota);
 			    Adicionaitem add = new Adicionaitem();
-				BigDecimal vlrtotCab=add.selecionarItens(BigDecimal.valueOf(1027430));
-				add.atualizarValorCAB(vlrtotCab, BigDecimal.valueOf(1027430));
+				BigDecimal vlrtotCab=add.selecionarItens(BigDecimal.valueOf(24));
+				add.atualizarValorCAB(vlrtotCab, BigDecimal.valueOf(24));
 
 			}
 			
@@ -138,7 +138,7 @@ public class Utilitario_HTML {
 	          BigDecimal qtdAnterior = rset.getBigDecimal("QTDNEG");
 	          //função que soma na nota que foi criada
 	          somaProd(nunota, codprod, qtdneg, qtdAnterior,volume,remessaOrigem);
-	          //função que subtrai da nota origem (1027430)
+	          //função que subtrai da nota origem (24)
 	          this.subtrairDoApontamento(codprod, sequencia, apontamento, qtdneg, remessaOrigem);
 	       }
 	    } catch (Exception var17) {
@@ -223,8 +223,8 @@ public boolean verificaNotaEVOX(BigDecimal nunota, BigDecimal codprod, BigDecima
 	          BigDecimal nunota = rset.getBigDecimal("NUNOTA");
 	          subtraiProd(nunota, codprod, qtdneg, qtdAnterior, sequencia,remessaOrigem);
 	          Adicionaitem add = new Adicionaitem();
-			  BigDecimal vlrtotCab=add.selecionarItens(BigDecimal.valueOf(1027430));
-			  add.atualizarValorCAB(vlrtotCab, BigDecimal.valueOf(1027430));
+			  BigDecimal vlrtotCab=add.selecionarItens(BigDecimal.valueOf(24));
+			  add.atualizarValorCAB(vlrtotCab, BigDecimal.valueOf(24));
 	       }
 	    } catch (Exception var16) {
 	       var16.printStackTrace();
@@ -267,9 +267,9 @@ public boolean verificaNotaEVOX(BigDecimal nunota, BigDecimal codprod, BigDecima
 		            sql.executeUpdate();
 		            
 		            
-		            if(volume.intValue() ==6) {
-		          	  adicionaBombona(nunota,qtdneg,remessaOrigem);
-		            }
+//		            if(volume.intValue() ==6) {
+//		          	  adicionaBombona(nunota,qtdneg,remessaOrigem);
+//		            }
 		            imp.calcularImpostos(nunota);
 		            imp.setForcarRecalculo(true);
 		            imp.totalizarNota(nunota);
@@ -311,9 +311,9 @@ public boolean verificaNotaEVOX(BigDecimal nunota, BigDecimal codprod, BigDecima
 		            sql.executeUpdate();
 		            
 		            
-		            if(volume.intValue() ==6) {
-		          	  adicionaBombona(nunota,qtdneg,remessaOrigem);
-		            }
+//		            if(volume.intValue() ==6) {
+//		          	  adicionaBombona(nunota,qtdneg,remessaOrigem);
+//		            }
 		            imp.calcularImpostos(nunota);
 		            imp.setForcarRecalculo(true);
 		            imp.totalizarNota(nunota);
@@ -514,7 +514,7 @@ public boolean verificaNotaEVOX(BigDecimal nunota, BigDecimal codprod, BigDecima
 			
 			
 //			  ADICIONAR BOMBONA DE 20L no pedido gerado
-			   public void adicionaBombona(BigDecimal nunota, BigDecimal qtdneg, BigDecimal remessaOrigem) throws MGEModelException {
+			   public void adicionaBombona(BigDecimal nunota, BigDecimal qtdneg, BigDecimal remessaOrigem, BigDecimal sequencia) throws MGEModelException {
 
 				   boolean existeBombona = false;
 				   SessionHandle hnd = null;
@@ -555,7 +555,7 @@ public boolean verificaNotaEVOX(BigDecimal nunota, BigDecimal codprod, BigDecima
 				    	   lancarBombona(nunota,qtdneg,remessaOrigem);
 				       }
 				       //sbtrai bombona da nota de origem
-				       subtraiBombonaApontamento(remessaOrigem,qtdneg);
+				       subtraiBombonaApontamento(remessaOrigem,qtdneg,sequencia);
 				       
 				    } catch (Exception var17) {
 				       var17.printStackTrace();
@@ -568,7 +568,7 @@ public boolean verificaNotaEVOX(BigDecimal nunota, BigDecimal codprod, BigDecima
 			
 		}
 
-			private void subtraiBombonaApontamento(BigDecimal remessaOrigem, BigDecimal qtdneg) throws MGEModelException {
+			private void subtraiBombonaApontamento(BigDecimal remessaOrigem, BigDecimal qtdneg, BigDecimal sequencia2) throws MGEModelException {
 		
 				   SessionHandle hnd = null;
 				    JdbcWrapper jdbc = null;
@@ -584,9 +584,10 @@ public boolean verificaNotaEVOX(BigDecimal nunota, BigDecimal codprod, BigDecima
 				       jdbc = entity.getJdbcWrapper();
 				       jdbc.openSession();
 				       query = new NativeSql(jdbc); 
-				       query.setNamedParameter("QTDNEG", qtdneg);
+				       query.setNamedParameter("SEQUENCIA", sequencia2);
 				       query.setNamedParameter("NUNOTA", remessaOrigem);
-				       query.appendSql("SELECT TOP 1 QTDNEG,VLRUNIT,SEQUENCIA FROM SANKHYA.TGFITE WHERE NUNOTA = :NUNOTA AND CODPROD = 4008001 AND QTDNEG=:QTDNEG");
+				       query.appendSql("SELECT TOP 1 QTDNEG,VLRUNIT,SEQUENCIA FROM SANKHYA.TGFITE\r\n"
+				       		+ "WHERE NUNOTA = :NUNOTA AND CODPROD = 4008001 AND QTDNEG = (SELECT QTDNEG FROM SANKHYA.TGFITE WHERE NUNOTA =:NUNOTA AND SEQUENCIA = :SEQUENCIA)");
 				       rset = query.executeQuery();
 				       if (rset.next()) {
 
@@ -660,7 +661,7 @@ public boolean verificaNotaEVOX(BigDecimal nunota, BigDecimal codprod, BigDecima
 							.set("ATUALESTTERC", "P")
 							.set("TERCEIROS", "S")
 							.set("PENDENTE",  "S")
-							.set("AD_CUSTOMIZACAO",  BigDecimal.valueOf(1027430))//CUSTOMIZAÇÃO RECEBE O CAMPO DA NOTA PARA CASO DELETE RETORNAR PARA O VALOR CERTO
+							.set("AD_CUSTOMIZACAO",  BigDecimal.valueOf(24))//CUSTOMIZAÇÃO RECEBE O CAMPO DA NOTA PARA CASO DELETE RETORNAR PARA O VALOR CERTO
 							.set("AD_REMESSAORIGEM", remessaOrigem)
 					        .save();
 					

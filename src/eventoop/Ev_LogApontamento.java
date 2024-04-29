@@ -1,3 +1,4 @@
+
 package eventoop;
 
 import java.io.PrintWriter;
@@ -47,6 +48,10 @@ public class Ev_LogApontamento implements EventoProgramavelJava{
 	      Utilitario_HTML lp = new Utilitario_HTML();
 	      
 	      BigDecimal nunpedevox= buscarnunpedevox(remessaOrigem,codprod,sequencia);
+
+	         if(volume.intValue() ==6) {
+	        	  lp.adicionaBombona(nunota,qtdneg,remessaOrigem,sequencia);
+	        }
 	      if(nunpedevox==null) {
 	    	 boolean somaOuLanca = lp.verificaNota(nunota, codprod, qtdneg, sequencia, apontamento,remessaOrigem,volume);
 	      
@@ -135,7 +140,7 @@ public class Ev_LogApontamento implements EventoProgramavelJava{
 		BigDecimal volume = target.asBigDecimal("VOLUME");
 		
 		
-		if(nunotaOrigem.intValue() == 1027430) {
+		if(nunotaOrigem.intValue() == 24) {
 			//verificar se foi lançado na nota de origem
 			boolean retornou = false;
 			
@@ -166,8 +171,8 @@ public class Ev_LogApontamento implements EventoProgramavelJava{
 						lp.atualizaNotaOrigemEVOX(nunotaOrigem,qtdneg,qtdAnterior,sequencia,codprod,vlrunit,nunpedevox);
 					}
 					Adicionaitem add = new Adicionaitem();
-					BigDecimal vlrtotCab=add.selecionarItens(BigDecimal.valueOf(1027430));
-					add.atualizarValorCAB(vlrtotCab, BigDecimal.valueOf(1027430));
+					BigDecimal vlrtotCab=add.selecionarItens(BigDecimal.valueOf(24));
+					add.atualizarValorCAB(vlrtotCab, BigDecimal.valueOf(24));
 					//util.somaProd(nunot,codprod,qtdneg,qtdAnterior);
 					System.out.println(" ###################achou qtdneg da nota origem TESTE = "+qtdAnterior);
 					
@@ -187,7 +192,7 @@ public class Ev_LogApontamento implements EventoProgramavelJava{
 				lp.additensLog(nunotaOrigem, codprod, qtdneg, codvol, vlrunit, vlrtotal, null, null, null,null,null);
 			}
 	        if(volume.intValue() ==6) {
-	      	  lp.adicionaBombona(nunotaOrigem,qtdneg,null);
+	      	  lp.adicionaBombona(nunotaOrigem,qtdneg,null,null);
 	        }
 		}
 

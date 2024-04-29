@@ -56,7 +56,7 @@ public class Addpedido implements EventoProgramavelJava{
 			  try {
 	        BigDecimal nunotaorigem = cab.asBigDecimal("NUNOTA");
 			NativeSql query = new NativeSql(jdbc);
-			query.setNamedParameter("NUNOTA", BigDecimal.valueOf(1027430));
+			query.setNamedParameter("NUNOTA", BigDecimal.valueOf(24));
 			query.appendSql("SELECT STATUSNOTA FROM TGFCAB WHERE NUNOTA = :NUNOTA");
 			ResultSet rset = query.executeQuery();
 
@@ -65,7 +65,7 @@ public class Addpedido implements EventoProgramavelJava{
 
 				if ("A".equals(status)) {
 					BigDecimal nunpedevox=consultaNunpedevox(idiproc);
-					consultapedido(nunotaorigem, BigDecimal.valueOf(1027430),nunpedevox);
+					consultapedido(nunotaorigem, BigDecimal.valueOf(24),nunpedevox);
 				}
 			}
 
@@ -119,71 +119,55 @@ public class Addpedido implements EventoProgramavelJava{
 		
 		try {
 		 String sql1 = "SELECT DISTINCT ITE.CODPROD, ITE.QTDNEG, PRO.USOPROD, PRO.AD_CLASSE_PROD\r\n"
-		 		+ "		 	FROM TGFITE ITE, TGFPRO PRO \r\n"
-		 		+ "		 	WHERE ITE.NUNOTA = :NUNOTA AND ITE.CODPROD = PRO.CODPROD AND PRO.USOPROD IN ('V','R')\r\n"
-		 		+ "		 	AND PRO.CODGRUPOPROD IN \r\n"
-		 		+ "		 	(1000300,1000400,1001000,1000600,1000700,1000800,1001100,1001300,1001400,1001500,1001600,1001700,1001900,1002000,1002100,1002100,1002200,1002300)\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2050121\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2050122\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2050163\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2050164\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2050165\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2050166\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2050167\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2050168\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2050169\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2028006\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2028007\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2028009\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2050050\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2030009\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2030003\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 205001027430\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2050025\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2050123\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 205011027430\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2050120\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2050125\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2050162\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2050153\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2050154\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2050152\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2050151\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2050150\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2050155\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2050159\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2050160\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2050158\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2050157\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2050156\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2050161\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2018023\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2050045\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2050047\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2008061\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2050043\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2012000\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2005062\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2050052\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2050046\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2050048\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2050189\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2050027\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2050028\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2050029\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2001004\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2009048\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2050044\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2050051\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2005174\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2050026\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2050169\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2010043\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2011072\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 4050501\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 4050041\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 2005110\r\n"
-		 		+ "		 	AND PRO.CODPROD <> 4008001";
+		 		+ "		 				 	FROM SANKHYA.TGFITE ITE, SANKHYA.TGFPRO PRO \r\n"
+		 		+ "		 				 	WHERE  ITE.CODPROD = PRO.CODPROD AND PRO.USOPROD IN ('V','R')\r\n"
+		 		+ "		 				 	AND PRO.CODGRUPOPROD IN \r\n"
+		 		+ "		 				 	(1000300,1000400,1001000,1000600,1000700,1000800,1001100,1001300,1001400,1001500,1001600,1001700,1001900,1002000,1002100,1002100,1002200,1002300)\r\n"
+		 		+ "		 				 	AND PRO.CODPROD <> 2050121\r\n"
+		 		+ "		 				 	AND PRO.CODPROD <> 2050122\r\n"
+		 		+ "		 				 	AND PRO.CODPROD <> 2050163\r\n"
+		 		+ "		 				 	AND PRO.CODPROD <> 2050164\r\n"
+		 		+ "		 				 	AND PRO.CODPROD <> 2050165\r\n"
+		 		+ "		 				 	AND PRO.CODPROD <> 2050166\r\n"
+		 		+ "		 				 	AND PRO.CODPROD <> 2050167\r\n"
+		 		+ "		 				 	AND PRO.CODPROD <> 2050168\r\n"
+		 		+ "		 				 	AND PRO.CODPROD <> 2050169\r\n"
+		 		+ "		 				 	AND PRO.CODPROD <> 2028006\r\n"
+		 		+ "		 				 	AND PRO.CODPROD <> 2028007\r\n"
+		 		+ "		 				 	AND PRO.CODPROD <> 2028009\r\n"
+		 		+ "		 				 	AND PRO.CODPROD <> 2030009\r\n"
+		 		+ "		 				 	AND PRO.CODPROD <> 2030003\r\n"
+		 		+ "		 				 	AND PRO.CODPROD <> 2050123\r\n"
+		 		+ "		 				 	AND PRO.CODPROD <> 2050120\r\n"
+		 		+ "		 				 	AND PRO.CODPROD <> 2050125\r\n"
+		 		+ "		 				 	AND PRO.CODPROD <> 2050162\r\n"
+		 		+ "		 				 	AND PRO.CODPROD <> 2050153\r\n"
+		 		+ "		 				 	AND PRO.CODPROD <> 2050154\r\n"
+		 		+ "		 				 	AND PRO.CODPROD <> 2050152\r\n"
+		 		+ "		 				 	AND PRO.CODPROD <> 2050151\r\n"
+		 		+ "		 				 	AND PRO.CODPROD <> 2050150\r\n"
+		 		+ "		 				 	AND PRO.CODPROD <> 2050155\r\n"
+		 		+ "		 				 	AND PRO.CODPROD <> 2050159\r\n"
+		 		+ "		 				 	AND PRO.CODPROD <> 2050160\r\n"
+		 		+ "		 				 	AND PRO.CODPROD <> 2050158\r\n"
+		 		+ "		 				 	AND PRO.CODPROD <> 2050157\r\n"
+		 		+ "		 				 	AND PRO.CODPROD <> 2050156\r\n"
+		 		+ "		 				 	AND PRO.CODPROD <> 2050161\r\n"
+		 		+ "		 				 	AND PRO.CODPROD <> 2012000\r\n"
+		 		+ "		 				 	AND PRO.CODPROD <> 2005062\r\n"
+		 		+ "		 				 	AND PRO.CODPROD <> 2050189\r\n"
+		 		+ "		 				 	AND PRO.CODPROD <> 2050027\r\n"
+		 		+ "		 				 	AND PRO.CODPROD <> 2050028\r\n"
+		 		+ "		 				 	AND PRO.CODPROD <> 2050029\r\n"
+		 		+ "		 				 	AND PRO.CODPROD <> 2001004\r\n"
+		 		+ "		 				 	AND PRO.CODPROD <> 2005174\r\n"
+		 		+ "		 				 	AND PRO.CODPROD <> 2050169\r\n"
+		 		+ "		 				 	AND PRO.CODPROD <> 2010043\r\n"
+		 		+ "		 				 	AND PRO.CODPROD <> 2011072\r\n"
+		 		+ "		 				 	AND PRO.CODPROD <> 4050501\r\n"
+		 		+ "		 				 	AND PRO.CODPROD <> 4050041\r\n"
+		 		+ "		 				 	AND PRO.CODPROD <> 2005110\r\n"
+		 		+ "		 				 	AND PRO.CODPROD <> 4008001";
          NativeSql query1 = new NativeSql(jdbc);
          query1.setNamedParameter("NUNOTA", nunotaorigem);
          query1.appendSql(sql1);
@@ -197,7 +181,7 @@ public class Addpedido implements EventoProgramavelJava{
              add.consultaPreco(nunota, codprod, quantidade, nunotaorigem,nunpedevox);
              if(bombona.compareTo(BigDecimal.valueOf(6))==0) {
             	 add.consultaPreco(nunota, BigDecimal.valueOf(4008001), quantidade, nunotaorigem,nunpedevox);
-            	 //consultaproduto(BigDecimal.valueOf(1027430),BigDecimal.valueOf(4008001),quantidade,nunotaorigem);
+            	 //consultaproduto(BigDecimal.valueOf(24),BigDecimal.valueOf(4008001),quantidade,nunotaorigem);
              }
          }
 	       
@@ -225,7 +209,7 @@ public class Addpedido implements EventoProgramavelJava{
 		try {
 		String sql = "SELECT CODPROD, QTDNEG FROM TGFITE WHERE NUNOTA = :NUNOTA";
         NativeSql query = new NativeSql(jdbc);
-        query.setNamedParameter("NUNOTA", BigDecimal.valueOf(1027430));
+        query.setNamedParameter("NUNOTA", BigDecimal.valueOf(24));
         query.appendSql(sql);
         ResultSet rset = query.executeQuery();
         

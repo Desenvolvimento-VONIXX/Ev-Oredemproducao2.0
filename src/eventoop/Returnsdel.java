@@ -59,7 +59,7 @@ public class Returnsdel implements EventoProgramavelJava{
 		BigDecimal customizacao = ite.asBigDecimal("AD_CUSTOMIZACAO");
 		BigDecimal nunota = ite.asBigDecimal("NUNOTA");
 		
-		if(nunotaOrigem!=null && customizacao.intValue() == 1027430) {
+		if(nunotaOrigem!=null && customizacao.intValue() == 24) {
 			//somaregistro(nunota,codprod,later);
 			
 			pegaIdLog(nunota,codprod,nunotaOrigem);

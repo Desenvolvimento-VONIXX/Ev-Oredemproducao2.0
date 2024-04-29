@@ -73,7 +73,7 @@ public class Adicionaitem {
 //		  try {
 //              NativeSql sql = new NativeSql(jdbc);
 //              sql.appendSql("UPDATE TGFITE SET QTDNEG = :QUANTIDADE WHERE NUNOTA = :NUNOTA AND CODPROD = :CODPROD");
-//              sql.setNamedParameter("NUNOTA", BigDecimal.valueOf(1027430));
+//              sql.setNamedParameter("NUNOTA", BigDecimal.valueOf(24));
 //              sql.setNamedParameter("QUANTIDADE", novaquantidade);
 //              sql.setNamedParameter("CODPROD", codprodorigem);
 //              sql.executeUpdate();
@@ -106,7 +106,7 @@ public class Adicionaitem {
 					DynamicVO pro = iteDAO.create()
 							.set("CODEMP", BigDecimal.valueOf(1))
 							.set("CODPROD", codprod)
-							.set("NUNOTA", BigDecimal.valueOf(1027430))
+							.set("NUNOTA", BigDecimal.valueOf(24))
 							.set("QTDNEG", quantidade)	
 							.set("CODVOL", proDAO.findByPK(codprod).asString("CODVOL"))
 							.set("VLRUNIT", vlr)
@@ -126,8 +126,8 @@ public class Adicionaitem {
 							.set("AD_APONTAMENTO", BigDecimal.valueOf(0.00))
 							.set("PENDENTE",  "S")
 					        .save();
-				BigDecimal vlrtotCab = selecionarItens(BigDecimal.valueOf(1027430));
-				atualizarValorCAB(vlrtotCab,BigDecimal.valueOf(1027430));	
+				BigDecimal vlrtotCab = selecionarItens(BigDecimal.valueOf(24));
+				atualizarValorCAB(vlrtotCab,BigDecimal.valueOf(24));	
 				updatenunota(nunotaorigem);
 				
 				
@@ -159,7 +159,7 @@ public class Adicionaitem {
 				DynamicVO pro = iteDAO.create()
 						.set("CODEMP", BigDecimal.valueOf(1))
 						.set("CODPROD", codprod)
-						.set("NUNOTA", BigDecimal.valueOf(1027430))
+						.set("NUNOTA", BigDecimal.valueOf(24))
 						.set("QTDNEG", quantidade)	
 						.set("CODVOL", proDAO.findByPK(codprod).asString("CODVOL"))
 						.set("VLRUNIT", vlr)
@@ -180,8 +180,8 @@ public class Adicionaitem {
 						.set("AD_NUNPEDEVOX", nunpedevox)
 						.set("PENDENTE",  "S")
 				        .save();
-			BigDecimal vlrtotCab = selecionarItens(BigDecimal.valueOf(1027430));
-			atualizarValorCAB(vlrtotCab,BigDecimal.valueOf(1027430));
+			BigDecimal vlrtotCab = selecionarItens(BigDecimal.valueOf(24));
+			atualizarValorCAB(vlrtotCab,BigDecimal.valueOf(24));
 			updatenunota(nunotaorigem);
 			
 			
@@ -278,8 +278,8 @@ public class Adicionaitem {
 	          sql.setNamedParameter("LANCADA", "SIM");
 	          sql.executeUpdate();
 	          
-	          imp.calcularTotalItens(BigDecimal.valueOf(1027430), true);
-	          imp.totalizarNota(BigDecimal.valueOf(1027430));
+	          imp.calcularTotalItens(BigDecimal.valueOf(24), true);
+	          imp.totalizarNota(BigDecimal.valueOf(24));
 	          
 	      } catch (Exception e) {
 	          e.printStackTrace();
