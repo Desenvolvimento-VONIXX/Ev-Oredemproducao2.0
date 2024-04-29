@@ -49,14 +49,26 @@ public class Returnsdel implements EventoProgramavelJava{
 	@Override
 	public void beforeDelete(PersistenceEvent event) throws Exception {
 		// TODO Auto-generated method stub
-		
+		BigDecimal later = null;
+		BigDecimal codprod =null;
+		BigDecimal nunotaOrigem=null;
+		BigDecimal customizacao=null;
 		//VERIFICA SE O ITEM EXCLUINDO FOI GERADO PELO DASH
 		DynamicVO ite = (DynamicVO) event.getVo();
+		if(ite.asBigDecimal("QTDNEG") != null) {
+			later= ite.asBigDecimal("QTDNEG");
+			
+		}
+		if(ite.asBigDecimal("CODPROD")!=null) {
+			 codprod = ite.asBigDecimal("CODPROD");
+		}
 		
-		BigDecimal later = ite.asBigDecimal("QTDNEG");
-		BigDecimal codprod = ite.asBigDecimal("CODPROD");
-		BigDecimal nunotaOrigem = ite.asBigDecimal("AD_REMESSAORIGEM");
-		BigDecimal customizacao = ite.asBigDecimal("AD_CUSTOMIZACAO");
+		if(ite.asBigDecimal("AD_REMESSAORIGEM")!=null) {
+			 nunotaOrigem = ite.asBigDecimal("AD_REMESSAORIGEM");
+		}
+		if(ite.asBigDecimal("AD_CUSTOMIZACAO")!=null) {
+		 customizacao = ite.asBigDecimal("AD_CUSTOMIZACAO");
+		}
 		BigDecimal nunota = ite.asBigDecimal("NUNOTA");
 		
 		if(nunotaOrigem!=null && customizacao.intValue() == 24) {
