@@ -11,17 +11,17 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="C:/Users/levi.azevedo/Downloads/Extensions/bibliotecas-sankhya-padrao/api_outros/cuckoo.jar"/>
-	<classpathentry kind="lib" path="C:/Users/levi.azevedo/Downloads/Extensions/bibliotecas-sankhya-padrao/repo-bibliotecasJava/mgecom-model-client.jar"/>
-	<classpathentry kind="lib" path="C:/Users/levi.azevedo/Downloads/Extensions/bibliotecas-sankhya-padrao/repo-bibliotecasJava/print-service-base.jar"/>
-	<classpathentry kind="lib" path="C:/Users/levi.azevedo/Downloads/Extensions/bibliotecas-sankhya-padrao/httpclient-4.2.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/levi.azevedo/Downloads/Extensions/bibliotecas-sankhya-padrao/repo-bibliotecasJava/okhttp-3.9.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/levi.azevedo/Downloads/Extensions/bibliotecas-sankhya-padrao/repo-bibliotecasJava/javax.servlet.jar"/>
-	<classpathentry kind="lib" path="C:/Users/levi.azevedo/Downloads/Extensions/bibliotecas-sankhya-padrao/repo-bibliotecasJava/javax.ejb-api-3.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/levi.azevedo/Downloads/Extensions/bibliotecas-sankhya-padrao/repo-bibliotecasJava/sanutil.jar"/>
-	<classpathentry kind="lib" path="C:/Users/levi.azevedo/Downloads/Extensions/bibliotecas-sankhya-padrao/repo-bibliotecasJava/jape.jar"/>
-	<classpathentry kind="lib" path="C:/Users/levi.azevedo/Downloads/Extensions/bibliotecas-sankhya-padrao/repo-bibliotecasJava/mge-modelcore.jar"/>
-	<classpathentry kind="lib" path="C:/Users/levi.azevedo/Downloads/Extensions/bibliotecas-sankhya-padrao/repo-bibliotecasJava/SankhyaW-extensions.jar"/>
-	<classpathentry kind="lib" path="C:/Users/levi.azevedo/Downloads/Extensions/bibliotecas-sankhya-padrao/repo-bibliotecasJava/sanws.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ALLYSON.C/Documents/bibliotecas-sankhya-padrao-main/bibliotecas-sankhya-padrao-main/api_outros/cuckoo.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ALLYSON.C/Documents/bibliotecas-sankhya-padrao-main/bibliotecas-sankhya-padrao-main/repo-bibliotecasJava/mgecom-model-client.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ALLYSON.C/Documents/bibliotecas-sankhya-padrao-main/bibliotecas-sankhya-padrao-main/repo-bibliotecasJava/print-service-base.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ALLYSON.C/Documents/bibliotecas-sankhya-padrao-main/bibliotecas-sankhya-padrao-main/repo-bibliotecasJava/httpclient-4.2.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ALLYSON.C/Documents/bibliotecas-sankhya-padrao-main/bibliotecas-sankhya-padrao-main/okhttp-3.9.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ALLYSON.C/Documents/bibliotecas-sankhya-padrao-main/bibliotecas-sankhya-padrao-main/repo-bibliotecasJava/javax.servlet.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ALLYSON.C/Documents/bibliotecas-sankhya-padrao-main/bibliotecas-sankhya-padrao-main/javax.ejb-api-3.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ALLYSON.C/Documents/bibliotecas-sankhya-padrao-main/sanutil.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ALLYSON.C/Documents/bibliotecas-sankhya-padrao-main/jape.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ALLYSON.C/Documents/bibliotecas-sankhya-padrao-main/mge-modelcore.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ALLYSON.C/Documents/bibliotecas-sankhya-padrao-main/SankhyaW-extensions.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ALLYSON.C/Documents/bibliotecas-sankhya-padrao-main/bibliotecas-sankhya-padrao-main/repo-bibliotecasJava/sanws.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
