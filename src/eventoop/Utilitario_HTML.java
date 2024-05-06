@@ -427,7 +427,7 @@ public class Utilitario_HTML {
 
    }
 
-   private void subtraiBombonaApontamento(BigDecimal remessaOrigem, BigDecimal qtdneg, BigDecimal sequenciaProd) throws MGEModelException {
+   private void subtraiBombonaApontamento(BigDecimal remessaOrigem, BigDecimal qtdneg, BigDecimal sequencia2) throws MGEModelException {
       SessionHandle hnd = null;
       JdbcWrapper jdbc = null;
       NativeSql query = null;
@@ -439,22 +439,21 @@ public class Utilitario_HTML {
          jdbc = entity.getJdbcWrapper();
          jdbc.openSession();
          query = new NativeSql(jdbc);
-         query.setNamedParameter("SEQUENCIA", sequenciaProd);
+         query.setNamedParameter("SEQUENCIA", sequencia2);
          query.setNamedParameter("NUNOTA", remessaOrigem);
-         query.appendSql("SELECT TOP 1 QTDNEG,VLRUNIT,SEQUENCIA FROM SANKHYA.TGFITE\r\n"
-         		+ " WHERE NUNOTA = :NUNOTA AND CODPROD = 4008001 AND QTDNEG = (SELECT QTDNEG FROM SANKHYA.TGFITE WHERE NUNOTA =:NUNOTA AND SEQUENCIA = :SEQUENCIA)");
+         query.appendSql("SELECT TOP 1 QTDNEG,VLRUNIT,SEQUENCIA FROM SANKHYA.TGFITE\r\nWHERE NUNOTA = :NUNOTA AND CODPROD = 4008001 AND QTDNEG = (SELECT QTDNEG FROM SANKHYA.TGFITE WHERE NUNOTA =:NUNOTA AND SEQUENCIA = :SEQUENCIA)");
          rset = query.executeQuery();
          if (rset.next()) {
             BigDecimal qtdnegAnterior = rset.getBigDecimal("QTDNEG");
-            BigDecimal sequenciaBombona = rset.getBigDecimal("SEQUENCIA");
+            BigDecimal sequencia = rset.getBigDecimal("SEQUENCIA");
             BigDecimal novavariavel = qtdnegAnterior.subtract(qtdneg);
             BigDecimal vlrunitario = rset.getBigDecimal("VLRUNIT");
             NativeSql sql = new NativeSql(jdbc);
-            sql.appendSql("UPDATE TGFITE SET QTDNEG = :QTDNEG, VLRTOT = :VLRTOT  WHERE NUNOTA = :NUNOTA AND CODPROD = 4008001 AND SEQUENCIA=:SEQUENCIA");
+            sql.appendSql("UPDATE TGFITE SET QTDNEG = :QUANTIDADE, VLRTOT = :VLRTOT  WHERE NUNOTA = :NUNOTA AND CODPROD = 4008001 AND SEQUENCIA=:SEQUENCIA");
             sql.setNamedParameter("NUNOTA", remessaOrigem);
-            sql.setNamedParameter("SEQUENCIA", sequenciaBombona);
+            sql.setNamedParameter("SEQUENCIA", sequencia);
             sql.setNamedParameter("VLRTOT", vlrunitario.multiply(novavariavel));
-            sql.setNamedParameter("QTDNEG", novavariavel);
+            sql.setNamedParameter("QUANTIDADE", novavariavel);
             sql.executeUpdate();
          }
       } catch (Exception var17) {
