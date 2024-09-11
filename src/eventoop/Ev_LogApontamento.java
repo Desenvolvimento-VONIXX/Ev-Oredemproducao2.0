@@ -32,24 +32,34 @@ public class Ev_LogApontamento implements EventoProgramavelJava {
       String faturar = target.asString("FATURAR");
       Utilitario_HTML lp = new Utilitario_HTML();
       BigDecimal nunpedevox = this.buscarnunpedevox(remessaOrigem, codprod, sequencia);
-      if (volume.intValue() == 6) {
-         lp.adicionaBombona(nunota, qtdneg, remessaOrigem, sequencia);
+      
+      
+      
+      if("S".equals(faturar)) {
+    	  lp.lancarItensNaNota(nunota);
       }
+      
+      
+      
+      
+//      if (volume.intValue() == 6) {
+//         lp.adicionaBombona(nunota, qtdneg, remessaOrigem, sequencia);
+//      }
+//
+//      boolean somaOuLanca;
+//      if (nunpedevox == null) {
+//         somaOuLanca = lp.verificaNota(nunota, codprod, qtdneg, sequencia, apontamento, remessaOrigem, volume);
+//         if (!somaOuLanca) {
+//            lp.additensLog(nunota, codprod, qtdneg, codvol, vlrunit, vlrtotal, remessaOrigem, sequencia, apontamento, volume, nunpedevox);
+//         }
+//      } else {
+//         somaOuLanca = lp.verificaNotaEVOX(nunota, codprod, qtdneg, sequencia, apontamento, remessaOrigem, volume, nunpedevox);
+//         if (!somaOuLanca) {
+//            lp.additensLog(nunota, codprod, qtdneg, codvol, vlrunit, vlrtotal, remessaOrigem, sequencia, apontamento, volume, nunpedevox);
+//         }
+//      }
 
-      boolean somaOuLanca;
-      if (nunpedevox == null) {
-         somaOuLanca = lp.verificaNota(nunota, codprod, qtdneg, sequencia, apontamento, remessaOrigem, volume);
-         if (!somaOuLanca) {
-            lp.additensLog(nunota, codprod, qtdneg, codvol, vlrunit, vlrtotal, remessaOrigem, sequencia, apontamento, volume, nunpedevox);
-         }
-      } else {
-         somaOuLanca = lp.verificaNotaEVOX(nunota, codprod, qtdneg, sequencia, apontamento, remessaOrigem, volume, nunpedevox);
-         if (!somaOuLanca) {
-            lp.additensLog(nunota, codprod, qtdneg, codvol, vlrunit, vlrtotal, remessaOrigem, sequencia, apontamento, volume, nunpedevox);
-         }
-      }
-
-      volume.intValue();
+      
    }
 
    private BigDecimal buscarnunpedevox(BigDecimal remessaOrigem, BigDecimal codprod, BigDecimal sequencia) throws SQLException, MGEModelException {
@@ -78,6 +88,7 @@ public class Ev_LogApontamento implements EventoProgramavelJava {
       return nunpedevox;
    }
 
+   //update é para retoirnar o valor para a nota 24 caso a nota 9150 lançada seja cancelada
    public void afterUpdate(PersistenceEvent evt) throws Exception {
       DynamicVO target = (DynamicVO)evt.getVo();
       BigDecimal nunota = target.asBigDecimal("NUNOTA");
